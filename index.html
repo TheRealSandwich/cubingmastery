@@ -1,0 +1,578 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CubingMastery | Master the Cube</title>
+
+<style>
+:root {
+  --bg: #090d16;
+  --panel: #111827;
+  --panel2: #182235;
+  --accent: #7c5cff;
+  --accent2: #a18aff;
+  --text: #f4f5fb;
+  --muted: #929db1;
+  --border: #263248;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, Arial, sans-serif;
+  line-height: 1.6;
+}
+
+nav {
+  height: 75px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8%;
+  border-bottom: 1px solid var(--border);
+  background: rgba(9,13,22,.95);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.logo span { color: var(--accent2); }
+
+.nav-links {
+  display: flex;
+  gap: 28px;
+}
+
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.nav-links a:hover { color: white; }
+
+.hero {
+  min-height: 570px;
+  padding: 100px 8%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 50px;
+  background:
+    radial-gradient(ellipse at 80% 40%, #37266a55, transparent 45%);
+}
+
+.hero-content { max-width: 600px; }
+
+.tag {
+  display: inline-block;
+  padding: 6px 13px;
+  border: 1px solid #493b83;
+  border-radius: 30px;
+  color: #b7a6ff;
+  font-size: 12px;
+  margin-bottom: 22px;
+}
+
+h1 {
+  font-size: clamp(42px, 6vw, 72px);
+  line-height: 1.08;
+  letter-spacing: -3px;
+}
+
+h1 span { color: var(--accent2); }
+
+.hero p {
+  color: var(--muted);
+  margin: 24px 0;
+  max-width: 470px;
+}
+
+.btn {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 9px;
+  padding: 13px 22px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.btn:hover {
+  background: #957fff;
+  transform: translateY(-2px);
+}
+
+.btn.secondary {
+  background: var(--panel2);
+  border: 1px solid var(--border);
+}
+
+.cube {
+  width: 210px;
+  height: 210px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 7px;
+  transform: rotate(-12deg);
+  filter: drop-shadow(0 20px 40px #0008);
+}
+
+.cube div {
+  border-radius: 8px;
+  background: #7c5cff;
+  border: 3px solid #090d16;
+}
+
+.cube div:nth-child(2),
+.cube div:nth-child(4) { background: #f4cf42; }
+
+.cube div:nth-child(3),
+.cube div:nth-child(8) { background: #39c77c; }
+
+.cube div:nth-child(5) { background: #ef5350; }
+.cube div:nth-child(6) { background: #f4f4f4; }
+
+section {
+  padding: 85px 8%;
+  scroll-margin-top: 70px;
+}
+
+.section-heading { margin-bottom: 35px; }
+
+.section-heading h2 {
+  font-size: 34px;
+  letter-spacing: -1px;
+}
+
+.section-heading p {
+  color: var(--muted);
+  margin-top: 7px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  padding: 25px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  border-radius: 14px;
+  transition: .2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent);
+}
+
+.card .emoji { font-size: 30px; }
+.card h3 { margin: 12px 0 7px; }
+
+.card p {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.algorithms { background: #0d1320; }
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+input, select {
+  background: var(--panel);
+  color: white;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  outline: none;
+}
+
+input:focus, select:focus {
+  border-color: var(--accent);
+}
+
+#search { flex: 1; min-width: 180px; }
+
+.algo-list {
+  display: grid;
+  gap: 12px;
+}
+
+.algo {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 18px 20px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+.algo small { color: var(--muted); }
+
+.moves {
+  color: #b9aaff;
+  font-family: monospace;
+  font-size: 15px;
+  margin-top: 5px;
+  word-break: break-word;
+}
+
+.copy {
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  color: white;
+  padding: 9px 13px;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.copy:hover { border-color: var(--accent); }
+
+.tool-panel {
+  max-width: 700px;
+  margin: auto;
+  padding: 35px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  border-radius: 18px;
+  text-align: center;
+}
+
+.timer {
+  font-size: clamp(55px, 12vw, 85px);
+  font-weight: 800;
+  letter-spacing: -3px;
+  margin: 20px 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 15px;
+}
+
+.scramble {
+  background: var(--panel2);
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px 0;
+  font-family: monospace;
+  font-size: 17px;
+  line-height: 2;
+  word-spacing: 5px;
+}
+
+footer {
+  text-align: center;
+  padding: 35px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 13px;
+}
+
+@media(max-width:700px) {
+  nav { padding: 0 5%; }
+  .nav-links { gap: 12px; }
+  .nav-links a { font-size: 11px; }
+  .hero {
+    padding: 75px 7%;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .cube { align-self: center; }
+  section { padding: 65px 6%; }
+  .algo { align-items: flex-start; }
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="logo">Cubing<span>Mastery</span></div>
+  <div class="nav-links">
+    <a href="#home">Home</a>
+    <a href="#learn">Learn</a>
+    <a href="#algorithms">Algorithms</a>
+    <a href="#tools">Tools</a>
+  </div>
+</nav>
+
+<header class="hero" id="home">
+  <div class="hero-content">
+    <div class="tag">YOUR JOURNEY TO CUBING MASTERY</div>
+    <h1>Think fast.<br>Turn smart.<br><span>Master the cube.</span></h1>
+    <p>
+      Everything you need to become a better cuber.
+      Learn algorithms, practice your skills and
+      improve your solving times.
+    </p>
+    <a class="btn" href="#algorithms">Explore algorithms →</a>
+    <a class="btn secondary" href="#tools">Start practicing</a>
+  </div>
+
+  <div class="cube" aria-label="Colorful cube illustration">
+    <div></div><div></div><div></div>
+    <div></div><div></div><div></div>
+    <div></div><div></div><div></div>
+  </div>
+</header>
+
+<section id="learn">
+  <div class="section-heading">
+    <h2>Learn to solve</h2>
+    <p>Start from the basics and work your way up.</p>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <div class="emoji">🧊</div>
+      <h3>Beginner method</h3>
+      <p>Learn the basic steps to solve your first 3x3 cube.</p>
+    </div>
+    <div class="card">
+      <div class="emoji">⚡</div>
+      <h3>F2L</h3>
+      <p>Learn to solve the first two layers more efficiently.</p>
+    </div>
+    <div class="card">
+      <div class="emoji">🎯</div>
+      <h3>OLL</h3>
+      <p>Learn how to orient the last layer.</p>
+    </div>
+    <div class="card">
+      <div class="emoji">🏆</div>
+      <h3>PLL</h3>
+      <p>Learn how to permute the last layer.</p>
+    </div>
+  </div>
+</section>
+
+<section class="algorithms" id="algorithms">
+  <div class="section-heading">
+    <h2>Algorithm library</h2>
+    <p>Find algorithms and practice your favorite moves.</p>
+  </div>
+
+  <div class="controls">
+    <input id="search" placeholder="Search algorithms...">
+    <select id="category">
+      <option value="All">All categories</option>
+      <option value="Beginner">Beginner</option>
+      <option value="F2L">F2L</option>
+      <option value="OLL">OLL</option>
+      <option value="PLL">PLL</option>
+    </select>
+  </div>
+
+  <div class="algo-list" id="algoList"></div>
+</section>
+
+<section id="tools">
+  <div class="section-heading">
+    <h2>Practice tools</h2>
+    <p>Practice regularly and keep improving.</p>
+  </div>
+
+  <div class="tool-panel">
+    <h3>⏱️ Speedcubing timer</h3>
+    <div class="timer" id="timer">0.00</div>
+    <button class="btn" id="timerButton">Start timer</button>
+    <p class="hint">Click the button or press SPACE to start and stop.</p>
+  </div>
+
+  <br><br>
+
+  <div class="tool-panel">
+    <h3>🎲 Scramble generator</h3>
+    <div class="scramble" id="scramble">
+      Click generate to get a scramble.
+    </div>
+    <button class="btn" onclick="generateScramble()">Generate scramble</button>
+    <button class="btn secondary" onclick="copyScramble()">Copy</button>
+  </div>
+</section>
+
+<footer>
+  <div class="logo">Cubing<span>Mastery</span></div>
+  <p>Learn. Practice. Improve. Master the cube.</p>
+  <p>© 2026 CubingMastery. Built for cubers.</p>
+</footer>
+
+<script>
+const algorithms = [
+  { name: "Right-hand sexy move", category: "Beginner", moves: "R U R' U'" },
+  { name: "Left-hand sexy move", category: "Beginner", moves: "L' U' L U" },
+  { name: "Basic Sune", category: "OLL", moves: "R U R' U R U2 R'" },
+  { name: "Anti-Sune", category: "OLL", moves: "R U2 R' U' R U' R'" },
+  { name: "T-Perm", category: "PLL", moves: "R U R' U' R' F R2 U' R' U' R U R' F'" },
+  { name: "U-Perm (Ua)", category: "PLL", moves: "R U' R U R U R U' R' U' R2" },
+  { name: "U-Perm (Ub)", category: "PLL", moves: "R2 U R U R' U' R' U' R' U R'" },
+  { name: "F2L basic pair", category: "F2L", moves: "U R U' R'" },
+  { name: "F2L insertion", category: "F2L", moves: "U' L' U L" }
+];
+
+const algoList = document.getElementById("algoList");
+const search = document.getElementById("search");
+const category = document.getElementById("category");
+
+function renderAlgorithms() {
+  const query = search.value.toLowerCase();
+  const selected = category.value;
+
+  const filtered = algorithms.filter(a =>
+    (a.name.toLowerCase().includes(query) ||
+     a.moves.toLowerCase().includes(query)) &&
+    (selected === "All" || a.category === selected)
+  );
+
+  algoList.innerHTML = "";
+
+  if (!filtered.length) {
+    algoList.innerHTML = "<p>No algorithms found.</p>";
+    return;
+  }
+
+  filtered.forEach(a => {
+    const item = document.createElement("div");
+    item.className = "algo";
+
+    const info = document.createElement("div");
+    const title = document.createElement("strong");
+    title.textContent = a.name;
+
+    const label = document.createElement("small");
+    label.textContent = " · " + a.category;
+
+    const moves = document.createElement("div");
+    moves.className = "moves";
+    moves.textContent = a.moves;
+
+    info.append(title, label, moves);
+
+    const button = document.createElement("button");
+    button.className = "copy";
+    button.textContent = "Copy";
+
+    button.onclick = () => {
+      navigator.clipboard.writeText(a.moves)
+        .then(() => button.textContent = "Copied!")
+        .catch(() => button.textContent = "Copy unavailable");
+    };
+
+    item.append(info, button);
+    algoList.append(item);
+  });
+}
+
+search.addEventListener("input", renderAlgorithms);
+category.addEventListener("change", renderAlgorithms);
+renderAlgorithms();
+
+// TIMER
+
+let startTime = 0;
+let running = false;
+let interval = null;
+
+const timerDisplay = document.getElementById("timer");
+const timerButton = document.getElementById("timerButton");
+
+function updateTimer() {
+  const time = (Date.now() - startTime) / 1000;
+  timerDisplay.textContent = time.toFixed(2);
+}
+
+function toggleTimer() {
+  if (!running) {
+    clearInterval(interval);
+    startTime = Date.now();
+    running = true;
+    timerButton.textContent = "Stop timer";
+    interval = setInterval(updateTimer, 10);
+  } else {
+    clearInterval(interval);
+    running = false;
+    timerDisplay.textContent =
+      ((Date.now() - startTime) / 1000).toFixed(2);
+    timerButton.textContent = "Start timer";
+  }
+}
+
+timerButton.addEventListener("click", toggleTimer);
+
+document.addEventListener("keydown", e => {
+  if (e.code === "Space" &&
+      !["INPUT", "SELECT", "TEXTAREA"].includes(document.activeElement.tagName)) {
+    e.preventDefault();
+    toggleTimer();
+  }
+});
+
+// SCRAMBLE GENERATOR
+
+function generateScramble() {
+  const faces = ["R", "L", "U", "D", "F", "B"];
+  const modifiers = ["", "'", "2"];
+  const moves = [];
+  let previous = "";
+
+  while (moves.length < 20) {
+    const face = faces[Math.floor(Math.random() * faces.length)];
+
+    if (face === previous) continue;
+
+    const modifier = modifiers[
+      Math.floor(Math.random() * modifiers.length)
+    ];
+
+    moves.push(face + modifier);
+    previous = face;
+  }
+
+  document.getElementById("scramble").textContent =
+    moves.join(" ");
+}
+
+function copyScramble() {
+  const text = document.getElementById("scramble").textContent;
+
+  if (text.startsWith("Click generate")) return;
+
+  navigator.clipboard.writeText(text);
+}
+</script>
+
+</body>
+</html>
